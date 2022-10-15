@@ -5,6 +5,7 @@ import 'package:nottte/src/home/home_state.dart';
 import 'package:nottte/src/login/login_page.dart';
 import 'package:nottte/widgets/create_note_button.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatefulWidget {
   UserModel user;
   HomePage({

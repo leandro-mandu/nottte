@@ -47,19 +47,27 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(64.0),
-              child: Text(
-                "Nottte",
-                style: Theme.of(context).textTheme.titleLarge,
+      body: Container(
+        color: const Color(0xFF00127A),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Padding(
+                padding: EdgeInsets.all(64.0),
+                child: Text(
+                  "Nottte",
+                  style: TextStyle(
+                    fontSize: 35,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-            ),
-            const CircularProgressIndicator(),
-          ],
+              CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            ],
+          ),
         ),
       ),
     );

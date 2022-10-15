@@ -20,12 +20,20 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF00127A),
+        title: const Text("Nottte - Fazer login"),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
-              const Text("Preencha os dados para fazer login"),
+              Text(
+                "Preencha os dados para fazer login",
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
               const Divider(),
               Form(
                 key: _formKey,
@@ -73,6 +81,9 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
+              const SizedBox(
+                height: 32,
+              ),
               ElevatedButton(
                 onPressed: _formKey.currentState?.validate() == true
                     ? () {
@@ -104,7 +115,23 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       }
                     : null,
-                child: const Text('Entrar'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF00127A),
+                  fixedSize: Size(MediaQuery.of(context).size.width / 2, 50),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                          bottom: Radius.elliptical(80, 80))),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text("Entrar"),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Icon(Icons.navigate_next),
+                  ],
+                ),
               ),
             ],
           ),

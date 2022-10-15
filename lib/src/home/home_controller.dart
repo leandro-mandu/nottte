@@ -37,8 +37,11 @@ class HomeController {
 
       myNotes =
           List.from(listJsonNotes).map((e) => NoteModel.fromJson(e)).toList();
-
-      updateState(HomeStateSuccess());
+      if (myNotes.isEmpty) {
+        updateState(HomeStateEmpty());
+      } else {
+        updateState(HomeStateSuccess());
+      }
     } else {
       log('---> HomeController -->  sem notas: lista vazia');
 

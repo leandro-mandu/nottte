@@ -8,6 +8,7 @@ import '../../models/user_model.dart';
 import 'splash_state.dart';
 
 class SplashController {
+  // ignore: prefer_typing_uninitialized_variables
   var user;
   late final SharedPreferences prefs;
   SplashController() {
