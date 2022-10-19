@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:nottte/models/user_model.dart';
 import 'package:nottte/src/home/home_controller.dart';
 import 'package:nottte/src/home/home_state.dart';
-import 'package:nottte/src/login/login_page.dart';
 import 'package:nottte/widgets/create_note_button.dart';
+
+import '../../widgets/delete_account_modal.dart';
+import '../../widgets/delete_note_modal.dart';
+import '../../widgets/logout_modal.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -46,7 +49,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                logoutModal(context);
+                logoutModal(context, controller);
               },
               icon: const Icon(Icons.logout))
         ],
@@ -93,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                       subtitle: Text(controller.myNotes[i].subtitle),
                       trailing: IconButton(
                         onPressed: () {
-                          deleteNoteModal(context, i);
+                          deleteNoteModal(context, i, controller);
                         },
                         icon: const Icon(
                           Icons.delete,
@@ -126,7 +129,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  logoutModal(context);
+                  logoutModal(context, controller);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -137,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                 )),
             ElevatedButton(
                 onPressed: () {
-                  deleteAccountModal(context);
+                  deleteAccountModal(context, controller);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,153 +155,13 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: "Início",
+        ),
+        BottomNavigationBarItem(icon: Icon(Icons.add), label: "Criar nota"),
+      ]),
     );
-  }
-
-  Future<dynamic> deleteNoteModal(BuildContext context, int i) {
-    return showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return SizedBox(
-            height: 200,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    "Deseja realmente excluir esta nota?",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        controller.deleteNote(i: i);
-                        Navigator.pop(context);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text("Excluir"),
-                          Icon(
-                            Icons.delete,
-                            color: Color.fromARGB(255, 160, 8, 0),
-                          ),
-                        ],
-                      )),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text("Voltar"),
-                          Icon(
-                            Icons.navigate_before,
-                          ),
-                        ],
-                      )),
-                ]),
-          );
-        });
-  }
-
-  Future<dynamic> deleteAccountModal(BuildContext context) {
-    return showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return SizedBox(
-            height: 200,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    "Deseja realmente excluir sua conta?",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const Text('Todos os seus dados do Nottte serão apagados'),
-                  ElevatedButton(
-                      onPressed: () {
-                        controller.deleteAccount();
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const LoginPage()));
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text("Excluir"),
-                          Icon(
-                            Icons.delete,
-                            color: Color.fromARGB(255, 160, 8, 0),
-                          ),
-                        ],
-                      )),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text("Voltar"),
-                          Icon(
-                            Icons.navigate_before,
-                          ),
-                        ],
-                      )),
-                ]),
-          );
-        });
-  }
-
-  Future<dynamic> logoutModal(BuildContext context) {
-    return showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return SizedBox(
-            height: 200,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    "Deseja realmente sair?",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const Text(
-                      'Vocẽ poderá fazer login depois para ver suas notas'),
-                  ElevatedButton(
-                      onPressed: () {
-                        controller.logout();
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const LoginPage()));
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text("Sair"),
-                          Icon(
-                            Icons.logout,
-                            color: Color.fromARGB(255, 160, 8, 0),
-                          ),
-                        ],
-                      )),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text("Voltar"),
-                          Icon(
-                            Icons.navigate_before,
-                          ),
-                        ],
-                      )),
-                ]),
-          );
-        });
   }
 }
