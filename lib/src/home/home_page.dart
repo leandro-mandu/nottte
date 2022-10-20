@@ -32,9 +32,11 @@ class _HomePageState extends State<HomePage> {
       });
     });
     */
-    controller = HomeController(onUpdate: () {
-      setState(() {});
-    });
+    controller = HomeController(
+        onUpdate: () {
+          setState(() {});
+        },
+        user: widget.user);
 
     super.initState();
   }
