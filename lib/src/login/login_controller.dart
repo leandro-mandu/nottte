@@ -13,7 +13,6 @@ class LoginController {
 //    user = UserModel(nome: nome, email: email, senha: password);
     final prefs = await SharedPreferences.getInstance();
     await Future.delayed(const Duration(seconds: 2));
-    await prefs.setBool(SharedPreferencesKeys.hasUser, true);
     await prefs.setString(SharedPreferencesKeys.currentUser, jsonEncode(user));
     return LoginStateSuccess();
   }

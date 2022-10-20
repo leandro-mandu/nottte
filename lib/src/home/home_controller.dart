@@ -73,7 +73,6 @@ class HomeController {
 
   Future<void> logout() async {
     updateState(HomeStateLoading());
-    await prefs.remove(SharedPreferencesKeys.hasUser);
     await prefs.remove(SharedPreferencesKeys.currentUser);
     updateState(HomeStateEmpty());
   }
