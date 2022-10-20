@@ -7,15 +7,17 @@ import 'package:nottte/src/home/home_state.dart';
 import 'package:nottte/src/utils/shared_preferences_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../models/user_model.dart';
+
 class HomeController {
   HomeState state = HomeStateEmpty();
 
   final VoidCallback onUpdate;
   List<NoteModel> myNotes = <NoteModel>[];
-//  UserModel user;
+  UserModel user;
   late final SharedPreferences prefs;
 
-  HomeController({required this.onUpdate}) {
+  HomeController({required this.onUpdate, required this.user}) {
     init();
   }
 
@@ -29,9 +31,9 @@ class HomeController {
     log('---> HomeController -->  instância dados');
 
     prefs = await SharedPreferences.getInstance();
-    //await prefs.remove(SharedPreferencesKeys.notes);
     log('---> HomeController -->  lendo notas');
-    final notes = prefs.getString(SharedPreferencesKeys.notes);
+    final notes = prefs.getString(SharedPreferencesKeys.notes + user.email);
+    log("buscando notas na chave concatenada ${SharedPreferencesKeys.notes + user.email} parta buscar somente as notas deste usuário");
     if (notes != null && notes.isNotEmpty) {
       final listJsonNotes = jsonDecode(notes);
 
@@ -56,7 +58,9 @@ class HomeController {
     myNotes.add(note);
     log('---> HomeController -->  gravando na memória');
 
-    prefs.setString(SharedPreferencesKeys.notes, jsonEncode(myNotes));
+    prefs.setString(
+        SharedPreferencesKeys.notes + user.email, jsonEncode(myNotes));
+    log("armazenando notas na chave concatenada ${SharedPreferencesKeys.notes + user.email} parta que cada usuário tenha suas próprias notas");
     updateState(HomeStateSuccess());
   }
 
@@ -64,7 +68,9 @@ class HomeController {
     updateState(HomeStateLoading());
     myNotes.removeAt(i);
 
-    await prefs.setString(SharedPreferencesKeys.notes, jsonEncode(myNotes));
+    await prefs.setString(
+        SharedPreferencesKeys.notes + user.email, jsonEncode(myNotes));
+    log("deletando notas na chave concatenada ${SharedPreferencesKeys.notes + user.email} parta não afetar notas de outros usuários");
     updateState(HomeStateSuccess());
     if (myNotes.isEmpty) {
       updateState(HomeStateEmpty());
@@ -79,7 +85,9 @@ class HomeController {
 
   Future<void> deleteAccount() async {
     updateState(HomeStateLoading());
-    await prefs.clear();
+//    await prefs.clear();
+    await prefs.remove(SharedPreferencesKeys.currentUser);
+    await prefs.remove(SharedPreferencesKeys.notes + user.email);
     updateState(HomeStateEmpty());
   }
 }
